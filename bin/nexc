@@ -1,0 +1,14 @@
+#! /bin/bash
+
+echo -e "\nStart to compile $1\n"
+export NODE_PATH=$(which nexl | rev | cut -d'/' -f3- | rev)"/lib/node_modules"
+mkdir -p tmp && nexl $1
+srcFiles=./tmp/*.o
+for file in $srcFiles
+do
+  [ -f "$file" ] || continue
+  target="./$(basename $file | cut -d. -f1)"
+  echo -e "#! /usr/bin/env nex" > $target && echo -e "6E6573000000000000000000000000000000000000000000" | xxd -r -p >> $target
+  gzip $file -c >> $target && chmod +x $target && echo -e "Object file generated.\n  --> $target"
+done
+echo -e "\nCompiling process completed.\n\nCleansing the temp files..." && rm -rf tmp && echo -e "\nDone."

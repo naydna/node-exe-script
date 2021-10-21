@@ -1,0 +1,9 @@
+#! /bin/bash
+
+version="nex @ v1.0.1" fun="4475616E677E212E2E2E2E2E2E0A" help="6E657820697320616E20617373697374616E7420657865637574696F6E2070726F6772616D2E204E6F206E65656420746F2072756E206974206469726563746C792E0A" warn="0A4572726F723A204E6F646520656E7669726F6E6D656E74206973206E6F7420666F756E642C20706C65617365206D616B65207375726520746865204E6F64654A7320696E7374616C6C65642070726F7065726C792E0A"
+[ -z $1 ] && echo $fun | xxd -r -p && echo $version && exit
+[ $1 == "-v" ] && echo $version && exit
+[ $1 == "-h" ] && echo $help | xxd -r -p && exit
+shebang=`head -n 1 $1` oLang=$LANG oLcAll=$LC_ALL LANG=C LC_ALL=C bytlen=$((${#shebang} * 2 + 1 + 1 + 24 * 2 + 1)) LANG=$oLang LC_ALL=$oLcAll script=`xxd -px $1 | tr -d '\n' | cut -c $bytlen- | xxd -r -p | gzip -d` nexe=`which node`
+[ -z $nexe ] && echo $warn | xxd -r -p && exit
+[ -p /dev/stdin ] && read pdata && echo $pdata | node -e "$script" "$@" || node -e "$script" - "$@"

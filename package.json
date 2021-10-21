@@ -1,0 +1,31 @@
+{
+  "name": "nex",
+  "version": "1.0.0",
+  "description": "Node executable script. It's a tiny ecosystem(fake) for building and running Node script as single commandline tools. Depends on Node environment.",
+  "main": "index.js",
+  "bin": {
+    "nex": "bin/nex",
+    "nexc": "bin/nexc",
+    "nexl": "bin/nexl"
+  },
+  "engines": {
+    "node": ">=12.16.0"
+  },
+  "dependencies": {
+    "module-concat": "^2.3.0",
+    "uglify-js": "^3.14.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@git.xogrp.com:aan/tricks.git"
+  },
+  "author": "Andy An",
+  "license": "ISC"
+}

@@ -1,0 +1,13 @@
+#! /bin/bash
+
+nexe=`which node`
+if [ -z $nexe ]; then
+  echo
+  echo "Error: Node environment is not found, please make sure the NodeJs installed properly."
+  exit
+fi
+mkdir -p ~/.nex
+cp ./bin ~/.nex/
+echo 'export PATH="$PATH:$HOME/.nex/bin" # Add nex to PATH for executing'
+
+echo "Nex has been installed, have a fun with the fake executable file!"

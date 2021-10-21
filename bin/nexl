@@ -1,0 +1,48 @@
+#! /usr/bin/env node
+
+let modConcat = require('module-concat');
+let uglify = require('uglify-js');
+let fs = require('fs');
+let path = require('path')
+let inputFiles = process.argv.slice(2);
+let targetDir = 'tmp/';
+
+//console.log(process);
+
+if (inputFiles.length == 0) {
+  console.log('No source file specified.')
+  process.exit()
+}
+let linkedFile = path.join(targetDir, path.parse(inputFiles[0]).base + '.m');
+let precompiledFile = path.join(targetDir, path.parse(inputFiles[0]).base + '.o');
+
+let options = {
+  'extensions': ['.js', '.json'],
+  'moduleDirectory': ['node_modules', process.env.NODE_PATH]
+};
+
+modConcat(inputFiles[0], linkedFile, options, (err, stats) => {
+	if(err) throw err;
+
+  let src = fs.readFileSync(linkedFile, 'utf8')
+  //let funcName = `X${Math.random().toString(36).substr(2, 6)}e`
+  //wrapper = `function ${funcName}() {\n${src}\n}\nexports.run = ${funcName}`
+  //fs.writeFileSync(linkedFile, wrapper, 'utf8')
+	console.log(`${stats.files.length} file(s) linked and combined.`);
+  console.log(`  --> ${linkedFile}\n`);
+
+  let options = {
+    toplevel: true,
+    compress: {
+      passes: 2
+    },
+    output: {
+      beautify: false
+    }
+  };
+  src = fs.readFileSync(linkedFile, 'utf8');
+  let result = uglify.minify(src, options);
+  fs.writeFileSync(precompiledFile, result.code, 'utf8');
+  console.log('Optimized pre-compile file generated.');
+  console.log(`  --> ${precompiledFile}\n`);
+});

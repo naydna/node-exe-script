@@ -1,0 +1,5 @@
+#archive=`awk '/^nes/ {print NR; exit 0; }' $1`
+#script=`tail -n+$archive $1 | cut -b 25- | ghead -c -1 | gzip -d`
+
+#echo "console.log('test')" | gzip | xxd -ps -u -c 24
+#echo "1F8B0800A4276561" | xxd -r -p | gzip -d
